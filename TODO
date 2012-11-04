@@ -1,0 +1,3 @@
+conso persistency
+fix Utilisateu.dir_root issue and set up an Utilisateur environment
+rewrite transaction table for the history...
