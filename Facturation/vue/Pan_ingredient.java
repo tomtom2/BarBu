@@ -76,7 +76,7 @@ public class Pan_ingredient extends JPanel implements Observable{
 		supprButton.setContentAreaFilled(false);
 		supprButton.setPreferredSize(new Dimension(20, 20));
 		
-		ImageIcon img_default = new ImageIcon( getClass() .getResource( "icon_suppression.png" ));
+		ImageIcon img_default = new ImageIcon( getClass().getResource( "icon_suppression.png" ));
 		supprButton.setIcon(img_default);
 		panel_3.add(supprButton);
 		

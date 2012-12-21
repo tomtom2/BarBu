@@ -25,7 +25,7 @@ public class Utilisateur {
 	//private String description;
 	
 	//les chemins de fichiers
-	public static String dir_root = "TEST";
+	public static String dir_root = "TEST/";
 	public static String dir_comptes = dir_root+"comptes/";
 	public static String dir_historiques = dir_comptes+"historiques/";
 	public static String dir_private = dir_comptes+"privat/";
@@ -57,7 +57,8 @@ public class Utilisateur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			init(id);
+			System.out.println("user initiation !");
+			//init(id);
 			
 			
 		}
@@ -67,12 +68,12 @@ public class Utilisateur {
 			//si on n'est pas déjà inscrit :
 			//coisir un nom et un mot de pass
 			//puis on enregistre l'id dans un fichier.
-			EventQueue.invokeLater(new Runnable() {
+			/*EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					//new Inscription_model();//on check la BDD
 					new Inscription_vue();
 				}
-			});
+			});*/
 		}
 	}
 
@@ -84,7 +85,7 @@ public class Utilisateur {
 			String query = "SELECT * FROM utilisateurs WHERE id = "+id;
 			ResultSet res = state.executeQuery(query);
 			if(res.next()){
-				nom = res.getString("nom");
+				nom = "TEST";//res.getString("nom");
 				code = res.getString("code");
 				droit = res.getString("droit");
 				//description = res.getString("description");

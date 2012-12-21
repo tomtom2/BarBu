@@ -37,24 +37,25 @@ public class Connect{
 	
 	public static String filepath = "bdd.csv";
 	
-	private static String tableEleve = "eleves";
-	private static String column_idEleve = "id";
-	private static String column_prenomEleve = "prenom";
-	private static String column_nomEleve = "nom";
-	private static String column_promoEleve = "promo";
-	private static String column_soldeEleve = "solde";
+	private static String tableEleve[] = {"eleves", "table"};
+	private static String column_idEleve[] = {"id", "INTEGER PRIMARY KEY"};
+	private static String column_prenomEleve[] = {"prenom", "VARCHAR"};
+	private static String column_nomEleve[] = {"nom", "VARCHAR"};
+	private static String column_promoEleve[] = {"promo", "INTEGER"};
+	private static String column_soldeEleve[] = {"solde", "NUMERIC"};
 	
-	private static String tableTransactions = "transactions";
-	private static String column_idTransactions = "id";
-	private static String column_id_eleveTransactions = "id_eleve";
-	private static String column_operationTransactions = "operation";
-	private static String column_montantTransactions = "montant";
-	private static String column_dateTransactions = "date";
-	private static String column_id_utilisateurTransactions = "id_utilisateur";
+	private static String tableTransactions[] = {"transactions", "table"};
+	private static String column_idTransactions[] = {"id", ""};
+	private static String column_id_eleveTransactions[] = {"id_eleve", ""};
+	private static String column_operationTransactions[] = {"operation", ""};
+	private static String column_montantTransactions[] = {"montant", ""};
+	private static String column_dateTransactions[] = {"date", ""};
+	private static String column_id_utilisateurTransactions[] = {"id_utilisateur", ""};
 	
 	private static int avancement = 0;
 	
-	private static ArrayList<String> bdd_schem = new ArrayList<String>();
+	private static ArrayList<String[]> bdd_schem_clients = new ArrayList<String[]>();
+	private static ArrayList<String[]> bdd_schem_transactions = new ArrayList<String[]>();
 	
 	private static boolean connecting = true;
 	private static boolean running = false;
@@ -63,20 +64,20 @@ public class Connect{
 		private Connect() throws IOException{
 			//Utilisateur util = new Utilisateur();
 			//Fenetre_principale.dir_root = util.getNom();
-			bdd_schem.add(getTableEleve());
-			bdd_schem.add(getColumn_idEleve());
-			bdd_schem.add(getColumn_prenomEleve());
-			bdd_schem.add(getColumn_nomEleve());
-			bdd_schem.add(getColumn_promoEleve());
-			bdd_schem.add(getColumn_soldeEleve());
+			bdd_schem_clients.add(tableEleve);
+			bdd_schem_clients.add(column_idEleve);
+			bdd_schem_clients.add(column_prenomEleve);
+			bdd_schem_clients.add(column_nomEleve);
+			bdd_schem_clients.add(column_promoEleve);
+			bdd_schem_clients.add(column_soldeEleve);
 			
-			bdd_schem.add(getTableTransactions());
-			bdd_schem.add(column_idTransactions);
-			bdd_schem.add(column_id_eleveTransactions);
-			bdd_schem.add(column_operationTransactions);
-			bdd_schem.add(column_montantTransactions);
-			bdd_schem.add(column_dateTransactions);
-			bdd_schem.add(column_id_utilisateurTransactions);
+			bdd_schem_transactions.add(tableTransactions);
+			bdd_schem_transactions.add(column_idTransactions);
+			bdd_schem_transactions.add(column_id_eleveTransactions);
+			bdd_schem_transactions.add(column_operationTransactions);
+			bdd_schem_transactions.add(column_montantTransactions);
+			bdd_schem_transactions.add(column_dateTransactions);
+			bdd_schem_transactions.add(column_id_utilisateurTransactions);
 			
 		try {
 			if(new File(filepath).exists()){
@@ -98,45 +99,20 @@ public class Connect{
 			    }
 			    reader.close();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 			}
 			System.out.println("Connect : "+Utilisateur.dir_private);
-			if(new File(Utilisateur.dir_private+"table.csv").exists()){
-				CSVReader reader;
+			
+			
+			if(url.split(":")[1].equals("sqlite")){
 				try {
-					reader = new CSVReader(new FileReader(Utilisateur.dir_private+"table.csv"));
-			    String[] str;
-			    int i = 0;
-				while((str = reader.readNext()) != null){
-					bdd_schem.set(i, str[0]);
-					i++;
-				}
-			    /*
-			    tableEleve = reader.readNext()[0];
-				column_idEleve = reader.readNext()[0];
-				column_prenomEleve = reader.readNext()[0];
-				column_nomEleve = reader.readNext()[0];
-				column_promoEleve = reader.readNext()[0];
-				column_soldeEleve = reader.readNext()[0];
-				
-				tableTransactions = reader.readNext()[0];
-				column_idTransactions = reader.readNext()[0];
-				column_id_eleveTransactions = reader.readNext()[0];
-				column_operationTransactions = reader.readNext()[0];
-				column_montantTransactions = reader.readNext()[0];
-				column_dateTransactions = reader.readNext()[0];
-				column_id_utilisateurTransactions = reader.readNext()[0];
-				*/
-			    
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
+					Class.forName("org.sqlite.JDBC");
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
-			
 			conn = DriverManager.getConnection(url);//, user, passwd);
 			System.out.println("connection établie !");
 		} catch (SQLException e) {
@@ -153,11 +129,41 @@ public class Connect{
 				try {
 					new Connect();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				createTablesIfNotExists();
+				
 			}
 			return conn;	
+		}
+		
+		private static void createTablesIfNotExists(){
+			String tableName = bdd_schem_clients.get(0)[0];
+			String update = "CREATE  TABLE IF NOT EXISTS "+tableName+" (";
+			for(int i=1; i<bdd_schem_clients.size(); i++){
+				String column = bdd_schem_clients.get(i)[0];
+				String type = bdd_schem_clients.get(i)[1];
+				if(i<bdd_schem_clients.size()-1){
+					update += column+" "+type+", ";
+				}
+				else{
+					update += column+" "+type+")";
+				}
+			}
+			try {
+				conn.createStatement().executeUpdate(update);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private static void addColumn(String tableName, String column, String type){
+			String update = "ALTER  TABLE \"main\".\""+tableName+"\" ADD (\""+column+"\" "+type+")";
+			try {
+				conn.createStatement().executeUpdate(update);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public static Connection getSearchInstance(){
@@ -203,7 +209,6 @@ public class Connect{
 					}
 					//new Connect();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			return con;	
@@ -227,28 +232,22 @@ public class Connect{
 		
 		Statement state;
 		try {
-			state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		    ResultSet uprs = state.executeQuery("SELECT * FROM "+getTableEleve());
-		    	//on insert le client
-	          uprs.moveToInsertRow();
-	          uprs.updateString(getColumn_prenomEleve(), prenom);
-	          uprs.updateString(getColumn_nomEleve(), nom);
-	          uprs.updateInt(getColumn_promoEleve(), promo);
-	          uprs.updateFloat(getColumn_soldeEleve(), (float) solde);
-	          uprs.insertRow();
-	          
-	          uprs.close();
+			state = conn.createStatement();
+			String columnNames = getColumn_prenomEleve()+", "+getColumn_nomEleve()+", "+getColumn_promoEleve()+", "+getColumn_soldeEleve();
+			String valuesToInsert = "'"+prenom+"', '"+nom+"', '"+promo+"', "+solde;
+		    String sqlInsert = "INSERT INTO "+getTableEleve()+" ("+columnNames+") VALUES ("+valuesToInsert+")";
+		    
+		    state.execute(sqlInsert);
+		    
 	          state.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Statement state2;//on prend la clef primaire créée par la BDD qu'on indique à l'objet
 		try {
-			state2 = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		    ResultSet uprs = state2.executeQuery("SELECT * FROM "+getTableEleve());
-		    	
-		      uprs.last();
+			state2 = conn.createStatement();
+		    ResultSet uprs = state2.executeQuery("SELECT ROWID FROM "+getTableEleve());
+		    System.out.println(uprs.getInt(1));
 	          client.setCle_id(uprs.getInt(getColumn_idEleve()));
 	          
 	          uprs.close();
@@ -264,7 +263,7 @@ public class Connect{
 
 		try {
 			
-			Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			Statement state = conn.createStatement();
 			String query = "UPDATE "+getTableEleve()+" SET "+getColumn_prenomEleve()+" = '"+prenom2+"', "+getColumn_nomEleve()+" = '"+nom2+"', "+getColumn_promoEleve()+" = '"+promo+"', "+getColumn_soldeEleve()+" = '"+solde+"' WHERE "+getColumn_prenomEleve()+" = '"+prenom1+"' AND "+getColumn_nomEleve()+" = '"+nom1+"'";
 			state.executeUpdate(query);
 			state.close();
@@ -278,12 +277,11 @@ public class Connect{
 		
 		try {
 			
-			Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			Statement state = conn.createStatement();
 			String query = "DELETE FROM "+getTableEleve()+" WHERE "+getColumn_idEleve()+" = '"+client.getCle_id()+"'";
 			state.executeUpdate(query);
 			state.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -305,15 +303,15 @@ public static void supprimerTOUT(){
 public static void crediter(Client client, float crd){
 	
 	try {
-		Statement stateR = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		Statement stateR = conn.createStatement();
 		String queryR = "SELECT * FROM "+getTableEleve()+" WHERE "+getColumn_idEleve()+" = "+client.getCle_id();
 		ResultSet res = stateR.executeQuery(queryR);
-		res.first();
+		res.next();
 		float solde = res.getFloat(getColumn_soldeEleve()) + crd;
 		stateR.close();
 		res.close();
 		
-		Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		Statement state = conn.createStatement();
 		String query = "UPDATE "+getTableEleve()+" SET "+getColumn_soldeEleve()+" = '"+Client.verif_form_float(""+solde)+"' WHERE "+getColumn_idEleve()+" = "+client.getCle_id();
 		state.executeUpdate(query);
 		state.close();
@@ -321,21 +319,21 @@ public static void crediter(Client client, float crd){
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	Transactions.addTransaction(client.getCle_id(), "crédit", crd, Utilisateur.getId());
+	//Transactions.addTransaction(client.getCle_id(), "crédit", crd, Utilisateur.getId());
 }
 
 public static void debiter_conso(Client client, Boisson ing){
 	
 	try {
-		Statement stateR = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		Statement stateR = conn.createStatement();
 		String queryR = "SELECT * FROM "+getTableEleve()+" WHERE "+getColumn_idEleve()+" = "+client.getCle_id();
 		ResultSet res = stateR.executeQuery(queryR);
-		res.first();
+		res.next();
 		float solde = res.getFloat(getColumn_soldeEleve()) - ing.getPrix();
 		stateR.close();
 		res.close();
 		
-		Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		Statement state = conn.createStatement();
 		String query = "UPDATE "+getTableEleve()+" SET "+getColumn_soldeEleve()+" = '"+Client.verif_form_float(""+solde)+"' WHERE "+getColumn_idEleve()+" = "+client.getCle_id();
 		state.executeUpdate(query);
 		state.close();
@@ -343,7 +341,7 @@ public static void debiter_conso(Client client, Boisson ing){
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	Transactions.addTransaction(client.getCle_id(), ing.getNom(), - ing.getPrix(), Utilisateur.getId());
+	//Transactions.addTransaction(client.getCle_id(), ing.getNom(), - ing.getPrix(), Utilisateur.getId());
 }
 	
 public static void setSolde(String prenom, String nom, float crd){
@@ -490,7 +488,7 @@ public static float getSolde(String prenom, String nom){
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ArrayList<String> list = new ArrayList<String>();
+			/*ArrayList<String> list = new ArrayList<String>();
 			for(int i=0; i<tableInfo.getTxtFieldsList().size(); i++){
 				list.add(tableInfo.getTxtFieldsList().get(i).getText());
 			}
@@ -518,7 +516,7 @@ public static float getSolde(String prenom, String nom){
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 		else{
 			try {
@@ -560,27 +558,40 @@ public static float getSolde(String prenom, String nom){
 		}
 		return done;
 	}
+	
+	public static String getPassWd(){
+		// TODO
+		String pass = "";
+		return pass;
+	}
+
+	public static void setPassWd(String passwd){
+		// TODO
+	}
 
 	public static boolean isConnecting() {
 		return connecting;
 	}
 
-	public static ArrayList<String> getBdd_schem() {
+	public static ArrayList<String[]> getBdd_schem() {
+		ArrayList<String[]> bdd_schem = new ArrayList<String[]>();
+		for(int i=0; i<bdd_schem_clients.size(); i++){
+			bdd_schem.add(bdd_schem_clients.get(i));
+		}
+		for(int i=0; i<bdd_schem_transactions.size(); i++){
+			bdd_schem.add(bdd_schem_transactions.get(i));
+		}
 		return bdd_schem;
-	}
-
-	public static void setBdd_schem(ArrayList<String> bddSchem) {
-		bdd_schem = bddSchem;
 	}
 	
 	public static int getNbComptes() throws SQLException{
 		String sql  = "SELECT * FROM "+getTableEleve();
 		Statement statement = conn.createStatement();
 		ResultSet resultat = statement.executeQuery(sql);
-		resultat.last();
-		int nb = resultat.getRow();
 		
-		return nb;
+		int counter = 0;
+		while(resultat.next()){ counter++; }
+		return counter;
 	}
 
 	public static int getAvancement() {
@@ -592,10 +603,10 @@ public static float getSolde(String prenom, String nom){
 	}
 
 	public static void setTableEleve(String tableEleve) {
-		Connect.tableEleve = tableEleve;
+		Connect.tableEleve[0] = tableEleve;
 	}
 	public static String getTableEleve() {
-		return tableEleve;
+		return tableEleve[0];
 	}
 	public static void setConnecting(boolean connecting) {
 		Connect.connecting = connecting;
@@ -607,34 +618,34 @@ public static float getSolde(String prenom, String nom){
 		return max;
 	}
 	public static void setColumn_soldeEleve(String column_soldeEleve) {
-		Connect.column_soldeEleve = column_soldeEleve;
+		Connect.column_soldeEleve[0] = column_soldeEleve;
 	}
 	public static String getColumn_soldeEleve() {
-		return column_soldeEleve;
+		return column_soldeEleve[0];
 	}
 	public static void setColumn_idEleve(String column_idEleve) {
-		Connect.column_idEleve = column_idEleve;
+		Connect.column_idEleve[0] = column_idEleve;
 	}
 	public static String getColumn_idEleve() {
-		return column_idEleve;
+		return column_idEleve[0];
 	}
 	public static void setColumn_nomEleve(String column_nomEleve) {
-		Connect.column_nomEleve = column_nomEleve;
+		Connect.column_nomEleve[0] = column_nomEleve;
 	}
 	public static String getColumn_nomEleve() {
-		return column_nomEleve;
+		return column_nomEleve[0];
 	}
 	public static void setColumn_promoEleve(String column_promoEleve) {
-		Connect.column_promoEleve = column_promoEleve;
+		Connect.column_promoEleve[0] = column_promoEleve;
 	}
 	public static String getColumn_promoEleve() {
-		return column_promoEleve;
+		return column_promoEleve[0];
 	}
 	public static void setColumn_prenomEleve(String column_prenomEleve) {
-		Connect.column_prenomEleve = column_prenomEleve;
+		Connect.column_prenomEleve[0] = column_prenomEleve;
 	}
 	public static String getColumn_prenomEleve() {
-		return column_prenomEleve;
+		return column_prenomEleve[0];
 	}
 	public static void setRunning(boolean running) {
 		Connect.running = running;
@@ -644,11 +655,11 @@ public static float getSolde(String prenom, String nom){
 	}
 
 	public static void setTableTransactions(String tableTransactions) {
-		Connect.tableTransactions = tableTransactions;
+		Connect.tableTransactions[0] = tableTransactions;
 	}
 
 	public static String getTableTransactions() {
-		return tableTransactions;
+		return tableTransactions[0];
 	}
 
 }

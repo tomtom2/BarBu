@@ -380,7 +380,8 @@ public class TableInfo extends JPanel {
 					}
 					else{
 						txtFieldsList.get(i).setBackground(Color.WHITE);
-						Connect.getBdd_schem().set(i, txtFieldsList.get(i).getText());
+						String[] val = {txtFieldsList.get(i).getText(), ""};
+						Connect.getBdd_schem().set(i, val);
 					}
 				}
 			}
@@ -396,7 +397,7 @@ public class TableInfo extends JPanel {
 			
 		});
 		for(int i=0; i<Connect.getBdd_schem().size(); i++){
-			txtFieldsList.get(i).setText(Connect.getBdd_schem().get(i));
+			txtFieldsList.get(i).setText(Connect.getBdd_schem().get(i)[0]);
 		}
 	}
 

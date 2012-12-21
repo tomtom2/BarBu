@@ -25,7 +25,7 @@ public class Fen_client extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField jtf = new JTextField("");
+	private JTextField jtf = new JTextField("0.0");
 	private SpinnerNumberModel model;
 	
 	private static Fen_client fen_client;
@@ -200,6 +200,12 @@ public class Fen_client extends JFrame {
 			else{
 			    String solde_tmp = "";
 			    char[] num = jtf.getText().toCharArray();
+			    if(num.length==0){
+			    	num = "0.0".toCharArray();
+			    }
+			    else if(num.length==1){
+			    	num = (num[0]+".0").toCharArray();
+			    }
 			    for(int i=0; i<num.length; i++){
 				    if(num[1]=='-'){
 					    solde_tmp = "-";

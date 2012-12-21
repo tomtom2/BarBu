@@ -72,9 +72,9 @@ public class Compt_client extends Fenetre_chainee implements ActionListener, Win
 		
 		JMenu mnNewMenu = new JMenu("compte");
 		menuBar.add(mnNewMenu);
-		if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "utilisateur_admin")){
+		/*if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "utilisateur_admin")){
 			mnNewMenu.setEnabled(false);
-		}
+		}*/
 		
 		JMenuItem modif = new JMenuItem("modifier");
 		modif.addActionListener(new ModifListener());
@@ -131,9 +131,7 @@ public class Compt_client extends Fenetre_chainee implements ActionListener, Win
 			
 		});
 		panel_1.add(credit);
-		if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "utilisateur")){
-			credit.setEnabled(false);
-		}
+		
 		
 		JButton consomation = new JButton("conso");
 		consomation.addActionListener(new ActionListener(){
@@ -147,9 +145,6 @@ public class Compt_client extends Fenetre_chainee implements ActionListener, Win
 			
 		});
 		panel_1.add(consomation);
-		if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "utilisateur")){
-			consomation.setEnabled(false);
-		}
 		
 		JButton histo = new JButton("historique");
 		histo.setBackground(Color.WHITE);

@@ -88,7 +88,10 @@ public class Connection_valid implements Observable{
 		// TODO Auto-generated method stub
 		for(Observateur obs : this.listObservateur ){
 			obs.update(liste_des_test);
-			obs.updateString(Connect.getBdd_schem());
+			ArrayList<String> stringList = new ArrayList<String>();
+			for(String[] strTab : Connect.getBdd_schem())
+				stringList.add(strTab[0]);
+			obs.updateString(stringList);
 		}
 	}
 

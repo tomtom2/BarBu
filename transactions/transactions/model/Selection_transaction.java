@@ -54,10 +54,10 @@ public class Selection_transaction implements Observable {
 		    ResultSet res = state.executeQuery(query);
 	          while(res.next()){
 	        	  
-	        	  liste_operation.add(res.getString(Connect.getBdd_schem().get(9)));
-	        	  liste_montant.add(res.getFloat(Connect.getBdd_schem().get(10)));
-	        	  liste_date.add(res.getString(Connect.getBdd_schem().get(11)));
-	        	  liste_IDutilisateur.add(res.getInt(Connect.getBdd_schem().get(12)));
+	        	  liste_operation.add(res.getString(Connect.getBdd_schem().get(9)[0]));
+	        	  liste_montant.add(res.getFloat(Connect.getBdd_schem().get(10)[0]));
+	        	  liste_date.add(res.getString(Connect.getBdd_schem().get(11)[0]));
+	        	  liste_IDutilisateur.add(res.getInt(Connect.getBdd_schem().get(12)[0]));
 	          }
 	          res.close();
 	          state.close();

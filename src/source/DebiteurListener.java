@@ -130,6 +130,8 @@ public class DebiteurListener extends JFrame implements ActionListener{
 	public static void save(){
         FileWriter fw;
         try {
+        	System.out.println(Utilisateur.dir_root);
+        	System.out.println(c_file);
         	fw = new FileWriter(c_file, false);
         	CSVWriter writer = new CSVWriter(fw);
             // feed in your array (or convert your data to an array)

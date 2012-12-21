@@ -6,6 +6,9 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -51,9 +54,11 @@ public class ProgressBarLoader extends JPanel
     			Utilisateur user = new Utilisateur();
     			Utilisateur.dir_root = user.getNom()+"/";
             	//On autorise la mise � jour des donn�es et la mise � jour de l'affichage
-        		Statement state = Connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+    			Connection connection = Connect.getInstance();
+    			Statement state = connection.createStatement();
+    			ResultSet result = state.executeQuery("SELECT * FROM "+Connect.getTableEleve());
         	      
-        	      ResultSet result = state.executeQuery("SELECT * FROM "+Connect.getTableEleve());
+        	      //ResultSet result = state.executeQuery("SELECT * FROM "+Connect.getTableEleve());
         	      
         	      Connect.setConnecting(true);//on empeche l'affichage des messages d'erreure doublon
         			//pendant l'instenciation des clients de la base

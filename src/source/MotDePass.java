@@ -72,7 +72,7 @@ public class MotDePass extends JFrame {
 		mntmNewMenuItem = new JMenuItem("password");
 		mnModifier.add(mntmNewMenuItem);
 		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.LEFT);
-		
+		/*
 		if(first_time_logiciel){
 			//first_time_logiciel = false;
 			mntmUtilisateur = new JMenuItem("utilisateur");
@@ -94,8 +94,9 @@ public class MotDePass extends JFrame {
 		else{
 			Fenetre_principale.getFenetre_principale().setEnabled(false);
 			Fenetre_principale.getFenetre_principale().setVisible(false);
-		}
-		
+		}*/
+		Fenetre_principale.getFenetre_principale().setEnabled(false);
+		Fenetre_principale.getFenetre_principale().setVisible(false);
 		
 		mntmNewMenuItem.addActionListener(new Modifier());
 		
@@ -202,7 +203,7 @@ public class MotDePass extends JFrame {
 	}
 
 	public static void load() throws IOException{
-		Statement stat;//on prend le mot de pass correspondanr à la clef primaire créée de la BDD
+		/*Statement stat;//on prend le mot de pass correspondanr à la clef primaire créée de la BDD
 		try {
 			stat = Connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		    ResultSet res = stat.executeQuery("SELECT code FROM utilisateurs WHERE id = "+Utilisateur.getId());
@@ -216,7 +217,8 @@ public class MotDePass extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
-		}
+		}*/
+		mot_de_pass = Connect.getPasswd();
 		
 	}
 
@@ -224,7 +226,7 @@ public class MotDePass extends JFrame {
 
 	public static void setMotDePass_BDD(String text) {
 		// TODO Auto-generated method stub
-		Statement state;
+		/*Statement state;
 		try {
 			state = Connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 		    state.executeUpdate("UPDATE utilisateurs SET code = '"+text+"' WHERE id = "+Utilisateur.getId());
@@ -235,7 +237,8 @@ public class MotDePass extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		new Utilisateur();
+		new Utilisateur();*/
+		Connect.setPassWd(text);
 	}
 
 }

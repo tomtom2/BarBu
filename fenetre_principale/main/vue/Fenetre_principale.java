@@ -112,9 +112,8 @@ public class Fenetre_principale extends Fenetre_chainee {
 		JMenu Compt = new JMenu("Compte");
 		Compt.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(Compt);
-		if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "utilisateur_admin")){
-			Compt.setEnabled(false);
-		}
+		
+		Compt.setEnabled(true);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Ajouter");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -246,13 +245,12 @@ public class Fenetre_principale extends Fenetre_chainee {
 			
 		});
 		menuBar.add(lock);
-		
+		/*
 		JMenu mnAdmin = new JMenu("administrer");
 		menuBar.add(mnAdmin);
 		
-		if(!Liste_Utilisateurs.supperieurA(Utilisateur.droit, "admin")){
-			mnAdmin.setEnabled(false);
-		}
+		mnAdmin.setEnabled(false);
+		
 		
 		JMenuItem mntmUtil = new JMenuItem("Utilisateurs");
 		mntmUtil.addActionListener(new ActionListener(){
@@ -268,7 +266,7 @@ public class Fenetre_principale extends Fenetre_chainee {
 		mnAdmin.add(mntmUtil);
 		mnAdmin.add(mnNewMenu);
 		mnAdmin.add(mntmSuppr);
-		
+		*/
 		JPanel recherche_client = new JPanel();
 		//recherche_client.setPreferredSize(new Dimension(300, getHeight()));
 		//contentPane.add(recherche_client, BorderLayout.CENTER);
