@@ -5,11 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -124,7 +120,7 @@ public class MotDePass extends JFrame {
 				
 				if(code == KeyEvent.VK_ENTER){
 					String input = new String(passwordField.getPassword());
-		            if (input.equals(mot_de_pass)) {
+		            if(input.equals(Connect.getUserPassWord())) {
 		            	dispose();
 		            	first_time_logiciel = false;
 		            	javax.swing.SwingUtilities.invokeLater(new Runnable() {

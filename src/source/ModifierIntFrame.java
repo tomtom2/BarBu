@@ -14,6 +14,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import bdd.model.Connect;
+
 
 public class ModifierIntFrame extends JFrame {
 	
@@ -88,8 +90,10 @@ public class ModifierIntFrame extends JFrame {
 			// TODO Auto-generated method stub
 			mod.dispose();
 			String mdp = new String(passwordField.getPassword());
-			if(mdp.equals(MotDePass.getMot_de_pass()) && !textField.getText().isEmpty()){
-			    MotDePass.setMotDePass_BDD(textField.getText());
+			System.out.println(mdp+" => "+textField.getText());
+			if(mdp.equals(Connect.getUserPassWord())){
+			    //MotDePass.setMotDePass_BDD(textField.getText());
+			    Connect.setPassWd(textField.getText());
 			    try {
 					MotDePass.load();
 				} catch (IOException e) {
@@ -100,7 +104,7 @@ public class ModifierIntFrame extends JFrame {
 			}
 			else{
 				
-				JOptionPane.showMessageDialog(null, "L'ancien mot de pass est incorrect,\n ou le nouveau est vide ...", "erreur", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "L'ancien mot de pass est incorrect!\n", "erreur", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		

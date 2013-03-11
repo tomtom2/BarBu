@@ -18,14 +18,14 @@ import bdd.model.Connect;
 public class Utilisateur {
 
 	public static String filepath = "util.csv";
-	private static int id;
-	private static String nom;
+	public static int id = 1;
+	private static String nom = "";
 	private static String code;
 	public static String droit;
 	//private String description;
 	
 	//les chemins de fichiers
-	public static String dir_root = "TEST/";
+	public static String dir_root = "";
 	public static String dir_comptes = dir_root+"comptes/";
 	public static String dir_historiques = dir_comptes+"historiques/";
 	public static String dir_private = dir_comptes+"privat/";
@@ -38,63 +38,31 @@ public class Utilisateur {
 	public static boolean first_time = true;
 	
 	public Utilisateur(){
-		File f = new File(filepath);
-		if(f.exists()){
-			try {
-				CSVReader reader = new CSVReader(new FileReader(f));
-				String [] nextLine;
-				nextLine = reader.readNext();
-					id = Integer.valueOf(nextLine[0]).intValue();
-					 
-				reader.close();
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("user initiation !");
-			//init(id);
-			
-			
-		}
-		else{
-			//chercher à s'identifier dans la liste des utilisateurs
-			
-			//si on n'est pas déjà inscrit :
-			//coisir un nom et un mot de pass
-			//puis on enregistre l'id dans un fichier.
-			/*EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					//new Inscription_model();//on check la BDD
-					new Inscription_vue();
-				}
-			});*/
-		}
+		//work only with single user systeme!
+		Utilisateur.setId(Connect.getUserId());
+		Utilisateur.nom = Connect.getUserName();
+		Utilisateur.dir_root = Connect.getUserName()+"/";
+		init(1);
 	}
 
 	public boolean init(int id){
 		boolean taskDone = false;
 		try {
 			Connection conn = Connect.getSearchInstance();
-			Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String query = "SELECT * FROM utilisateurs WHERE id = "+id;
+			Statement state = conn.createStatement();
+			String query = "SELECT * FROM "+Connect.tableUser[0]+" WHERE "+Connect.getColumn_userId()+" = "+id;
 			ResultSet res = state.executeQuery(query);
 			if(res.next()){
-				nom = "TEST";//res.getString("nom");
-				code = res.getString("code");
-				droit = res.getString("droit");
+				nom = res.getString(Connect.getColumn_userName());
+				code = res.getString(Connect.getColumn_password());
+				droit = "";//res.getString("droit");
 				//description = res.getString("description");
 				
-				dir_root = nom+"/";
-				dir_comptes = nom+"/"+"comptes/";
+				dir_root = getNom()+"/";
+				dir_comptes = getNom()+"/"+"comptes/";
 				dir_historiques = dir_comptes+"historiques/";
 				dir_private = dir_comptes+"privat/";
-				dir_images = nom+"/"+"images/";
+				dir_images = getNom()+"/"+"images/";
 				
 				fichier_comptes = dir_comptes+"comptes.txt";
 				fichier_conso = dir_comptes+"conso.csv";
@@ -119,7 +87,7 @@ public class Utilisateur {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							
-							new MotDePass(nom);
+							new MotDePass(getNom());
 						}
 					});
 				}
@@ -178,12 +146,12 @@ public class Utilisateur {
 		this.description = description;
 	}
 */
-	public void setNom(String nom) {
+	public static void setNom(String nom) {
 		Utilisateur.nom = nom;
 	}
 
-	public String getNom() {
-		return nom;
+	public static String getNom() {
+		return Connect.getUserName();
 	}
 	
 }

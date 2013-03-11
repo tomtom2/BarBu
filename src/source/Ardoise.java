@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import main.main.Main;
+
 import source.vue.Fen_conso;
 
 import bdd.utilisateur.Utilisateur;
@@ -234,7 +236,8 @@ public class Ardoise extends JFrame {
         FileWriter fw;
         try {
         	fw = new FileWriter(
-        								new File(Utilisateur.fichier_conso));
+        			//new File(Utilisateur.fichier_conso));
+        			new File(Utilisateur.fichier_conso));
         	if(!Tab.isEmpty()){
         	for(int i = 0; i < Tab.size(); i++){
         		String str = Tab.get(i).getNom() + " " + Tab.get(i).getImg() + " " + Tab.get(i).getVolum() + " " + Tab.get(i).getDeg() + " " + Tab.get(i).getPrix() + " " + Tab.get(i).getType() + "\n";
@@ -280,7 +283,8 @@ public static void init(){
 		FileReader fr;
         try {
         	fr = new FileReader(
-    								new File(Utilisateur.fichier_conso));
+    		        //new File(Utilisateur.fichier_conso));
+        			new File(Utilisateur.fichier_conso));
         	
         	enreg(fr);
         	

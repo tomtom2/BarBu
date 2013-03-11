@@ -16,15 +16,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import bdd.utilisateur.Utilisateur;
-
 import main.vue.Fenetre_principale;
 import source.Client;
 import source.CreditListener;
 import source.fenetre_type.Fenetre_chainee;
 import source.fenetres.interfaces.ObservateurChainage;
 import vue.Facture_IHM;
-import droit.model.Liste_Utilisateurs;
 
 
 public class Compt_client extends Fenetre_chainee implements ActionListener, WindowListener {

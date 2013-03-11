@@ -11,15 +11,12 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 
-import source.vue.Compt_client;
-
-import bdd.model.Connect;
-import bdd.utilisateur.Utilisateur;
-
 import main.vue.Fenetre_principale;
 import model.Facture;
-
+import source.vue.Compt_client;
 import au.com.bytecode.opencsv.CSVReader;
+import bdd.model.Connect;
+import bdd.utilisateur.Utilisateur;
 
 
 public class Client implements Supprimable {

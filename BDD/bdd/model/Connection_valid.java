@@ -15,7 +15,6 @@ public class Connection_valid implements Observable{
 	private ArrayList<Observateur> listObservateur = new ArrayList<Observateur>();
 	
 	private static ArrayList<Boolean> liste_des_test = new ArrayList<Boolean>();
-
 	
 	/*public static boolean connectionIsValide(Connection conn){
 		//conn
@@ -25,7 +24,7 @@ public class Connection_valid implements Observable{
 		boolean tableExists = false;
 		Statement state;
 		try {
-			state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			state = conn.createStatement();
 		    ResultSet res = state.executeQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"+table+"'");
 	          if(res.next()){
 	        	  tableExists = true;
@@ -33,7 +32,6 @@ public class Connection_valid implements Observable{
 	          res.close();
 	          state.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -44,7 +42,7 @@ public class Connection_valid implements Observable{
 		boolean columnExists = false;
 		Statement state;
 		try {
-			state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			state = conn.createStatement();
 		    ResultSet res = state.executeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '"+table+"' AND COLUMN_NAME = '"+column+"'");
 	          if(res.next()){
 	        	  columnExists = true;

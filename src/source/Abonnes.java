@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import main.vue.Fenetre_principale;
-
 import bdd.model.Connect;
 import bdd.utilisateur.Utilisateur;
 

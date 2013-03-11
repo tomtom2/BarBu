@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import main.main.Main;
 import au.com.bytecode.opencsv.CSVWriter;
 import bdd.model.Connect;
 import bdd.model.Connection_valid;
@@ -40,7 +41,7 @@ public class Inscription_model implements Observable{
 		
 		Statement state;
 		try {
-			state = Connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			state = Connect.getInstance().createStatement();
 		    ResultSet res = state.executeQuery("SELECT * FROM utilisateurs");
 	          while(res.next()){
 	        	  listeUtilisateurs.add(res.getString("nom"));
@@ -155,7 +156,7 @@ public class Inscription_model implements Observable{
 		if(!ok){
 			Statement state;
 			try {
-				state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				state = conn.createStatement();
 			    state.executeUpdate("ALTER TABLE "+table+" ADD COLUMN "+column+" VARCHAR(64)");
 		          state.close();
 			} catch (SQLException e) {
@@ -171,7 +172,7 @@ public class Inscription_model implements Observable{
 		if(!ok){
 			Statement state;
 			try {
-				state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				state = conn.createStatement();
 			    state.executeUpdate("ALTER TABLE "+table+" ADD COLUMN "+column+" VARCHAR(64)");
 		          state.close();
 			} catch (SQLException e) {

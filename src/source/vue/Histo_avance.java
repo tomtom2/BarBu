@@ -12,24 +12,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.main.Main;
 import source.Client;
 import transaction.vue.Historique_transactions;
 import transactions.model.Selection_transaction;
 import au.com.bytecode.opencsv.CSVReader;
 import bdd.utilisateur.Inscription_model;
 import bdd.utilisateur.Utilisateur;
-import javax.swing.JSplitPane;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
 
 
 public class Histo_avance extends JFrame {

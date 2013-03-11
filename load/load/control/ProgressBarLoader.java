@@ -7,8 +7,6 @@ import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,7 +22,6 @@ import main.vue.Fenetre_principale;
 import source.Abonnes;
 import source.Client;
 import bdd.model.Connect;
-import bdd.utilisateur.Utilisateur;
 import doublon.Fen_doublons;
 
 public class ProgressBarLoader extends JPanel
@@ -48,11 +45,11 @@ public class ProgressBarLoader extends JPanel
         public Void doInBackground() {
             try {
     			Abonnes.miseAzero();//On vide la liste des abonnees de la memoire vive
-    			//ainsi que lla liste des doublons si elle n'est pas deja vide
+    			//ainsi que la liste des doublons si elle n'est pas deja vide
     			
     			Fenetre_principale.MiseAJour.clear();//on supprimme l'ancien affichage
-    			Utilisateur user = new Utilisateur();
-    			Utilisateur.dir_root = user.getNom()+"/";
+    			//Utilisateur user = new Utilisateur();
+    			//Utilisateur.dir_root = user.getNom()+"/";
             	//On autorise la mise � jour des donn�es et la mise � jour de l'affichage
     			Connection connection = Connect.getInstance();
     			Statement state = connection.createStatement();

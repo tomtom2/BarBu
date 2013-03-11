@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,6 +37,11 @@ public class Connect{
 	private static String passwd = "";
 	
 	public static String filepath = "bdd.csv";
+	
+	public static String tableUser[] = {"users", "table"};
+	private static String column_idUser[] = {"id", "INTEGER PRIMARY KEY"};
+	private static String column_nameUser[] = {"name", "VARCHAR"};
+	private static String column_passwdUser[] = {"password", "VARCHAR"};
 	
 	private static String tableEleve[] = {"eleves", "table"};
 	private static String column_idEleve[] = {"id", "INTEGER PRIMARY KEY"};
@@ -139,19 +145,26 @@ public class Connect{
 		
 		private static void createTablesIfNotExists(){
 			String tableName = bdd_schem_clients.get(0)[0];
-			String update = "CREATE  TABLE IF NOT EXISTS "+tableName+" (";
+			String updateEleves = "CREATE TABLE IF NOT EXISTS "+tableName+" (";
 			for(int i=1; i<bdd_schem_clients.size(); i++){
 				String column = bdd_schem_clients.get(i)[0];
 				String type = bdd_schem_clients.get(i)[1];
 				if(i<bdd_schem_clients.size()-1){
-					update += column+" "+type+", ";
+					updateEleves += column+" "+type+", ";
 				}
 				else{
-					update += column+" "+type+")";
+					updateEleves += column+" "+type+")";
 				}
 			}
+			
+			String tableUser = Connect.getTableUser();
+			String updateUser = "CREATE TABLE IF NOT EXISTS "+tableUser+" (";
+			updateUser += column_idUser[0]+" "+column_idUser[1]+", ";
+			updateUser += column_nameUser[0]+" "+column_nameUser[1]+", ";
+			updateUser += column_passwdUser[0]+" "+column_passwdUser[1]+")";
 			try {
-				conn.createStatement().executeUpdate(update);
+				conn.createStatement().executeUpdate(updateEleves);
+				conn.createStatement().executeUpdate(updateUser);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -247,8 +260,17 @@ public class Connect{
 		try {
 			state2 = conn.createStatement();
 		    ResultSet uprs = state2.executeQuery("SELECT ROWID FROM "+getTableEleve());
-		    System.out.println(uprs.getInt(1));
-	          client.setCle_id(uprs.getInt(getColumn_idEleve()));
+		    int uprs_id = 1;
+		    while(uprs.next()){
+		    	try{
+		    		uprs_id = uprs.getInt(getColumn_idEleve());
+		    	}
+		    	catch(Exception e){
+		    		
+		    	}
+		    }
+		    System.out.println("ADD ID: "+uprs_id);
+	        client.setCle_id(uprs_id);
 	          
 	          uprs.close();
 	          state2.close();
@@ -290,7 +312,7 @@ public static void supprimerTOUT(){
 		
 		try {
 			
-			Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			Statement state = conn.createStatement();
 			String query = "DELETE FROM "+getTableEleve();
 			state.executeUpdate(query);
 			state.close();
@@ -424,7 +446,7 @@ public static float getSolde(String prenom, String nom){
 		//pouet //
 		try {
         	//On autorise la mise � jour des donn�es et la mise � jour de l'affichage
-    		Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+    		Statement state = conn.createStatement();
     	      
     	      ResultSet result = state.executeQuery("SELECT * FROM "+getTableEleve());
     			
@@ -564,9 +586,99 @@ public static float getSolde(String prenom, String nom){
 		String pass = "";
 		return pass;
 	}
+	
+	private static Array getUserResultSet(){
+		Array array = (Array) new ArrayList();
+		try {
+			Statement state = conn.createStatement();
+			String queryR = "SELECT * FROM "+getTableUser();
+			ResultSet res = state.executeQuery(queryR);
+			res.next();
+			array = res.getArray(1);
+			state.close();
+			res.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return array;
+	}
+	public static int getUserId(){
+		int id = 0;
+		try {
+			Statement state = conn.createStatement();
+			String queryR = "SELECT * FROM "+getTableUser();
+			ResultSet res = state.executeQuery(queryR);
+			res.next();
+			id = res.getInt(Connect.getColumn_userId());
+			state.close();
+			res.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+	public static String getUserName(){
+		String name = "BarBu";
+		try {
+			Statement state = conn.createStatement();
+			String queryR = "SELECT * FROM "+getTableUser();
+			ResultSet res = state.executeQuery(queryR);
+			res.next();
+			name = res.getString(Connect.getColumn_userName());
+			state.close();
+			res.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name;
+	}
+	public static String getUserPassWord(){
+		String passwd = "";
+		try {
+			Statement state = conn.createStatement();
+			String queryR = "SELECT * FROM "+getTableUser();
+			ResultSet res = state.executeQuery(queryR);
+			res.next();
+			passwd = res.getString(Connect.getColumn_password());
+			state.close();
+			res.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return passwd;
+	}
 
 	public static void setPassWd(String passwd){
-		// TODO
+		Statement state;
+		try {
+			state = conn.createStatement();
+		    String sqlInsert = "UPDATE "+getTableUser()+" SET "+getColumn_password()+" = '"+passwd+"' WHERE "+Connect.column_idUser[0]+"="+Utilisateur.id;
+		    state.execute(sqlInsert);
+		    System.out.println();
+	        state.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static String getTableUser() {
+		return tableUser[0];
+	}
+
+	public static String getColumn_password() {
+		return column_passwdUser[0];
+	}
+	
+	public static String getColumn_userName() {
+		return column_nameUser[0];
+	}
+	
+	public static String getColumn_userId() {
+		return column_idUser[0];
 	}
 
 	public static boolean isConnecting() {

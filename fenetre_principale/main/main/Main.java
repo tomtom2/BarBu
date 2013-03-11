@@ -9,25 +9,20 @@ import bdd.utilisateur.Utilisateur;
 
 public class Main {
 
-	private static String fichier_conso = "conso.txt";
-	private static String nom = "nom Asso";
-	/**
-	 * @param args
-	 */
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 				Connect.getInstance();
-				Ardoise.init(fichier_conso);
+				new Utilisateur();
+				Ardoise.init(Utilisateur.fichier_conso);
 				
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						
-						new MotDePass(nom);
-					}
-				});
+//				EventQueue.invokeLater(new Runnable() {
+//					public void run() {
+//						new MotDePass(Utilisateur.getNom());
+//					}
+//				});
 				
-				//new Utilisateur();//on lance la session
 
 	}
 

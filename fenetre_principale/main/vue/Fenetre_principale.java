@@ -28,6 +28,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.main.Main;
 import source.Abonnes;
 import source.Ardoise;
 import source.Client;
@@ -43,8 +44,6 @@ import suppression.Fen_select_suppr;
 import bdd.utilisateur.Utilisateur;
 import bdd.vue.AdressBDD;
 import bdd.vue.Fen_BDD;
-import droit.model.Liste_Utilisateurs;
-import droits.vue.Fen_Liste_utilisateurs;
 
 
 
@@ -73,7 +72,7 @@ public class Fenetre_principale extends Fenetre_chainee {
 	
 	
 	
-	private static Utilisateur asso;
+	//private static Utilisateur asso;
 	
 	/**
 	 * Create the frame.
@@ -82,9 +81,9 @@ public class Fenetre_principale extends Fenetre_chainee {
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 650, 450);
-		asso = new Utilisateur();
+		//asso = new Utilisateur();
 		
-		setTitle(asso.getNom());
+		setTitle(Utilisateur.getNom());//asso.getNom());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -183,7 +182,7 @@ public class Fenetre_principale extends Fenetre_chainee {
 		mnAPropo.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnAPropo);
 		
-		JMenuItem mntmFoy = new JMenuItem(asso.getNom());
+		JMenuItem mntmFoy = new JMenuItem(Utilisateur.getNom());//asso.getNom());
 		mnAPropo.add(mntmFoy);
 		
 		JMenuItem mntmDebiteurs = new JMenuItem("debiteurs");
@@ -240,7 +239,7 @@ public class Fenetre_principale extends Fenetre_chainee {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				//setEnabled(false);
-				new MotDePass(asso.getNom());
+				new MotDePass(Utilisateur.getNom());//asso.getNom());
 			}
 			
 		});

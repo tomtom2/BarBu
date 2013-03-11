@@ -7,14 +7,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
 
 import main.vue.Fenetre_principale;
-
 import bdd.model.Connect;
 import bdd.utilisateur.Utilisateur;
 
